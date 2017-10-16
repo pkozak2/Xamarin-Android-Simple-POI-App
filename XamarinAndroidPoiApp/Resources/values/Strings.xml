@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">XamarinAndroidPoiApp</string>
+  <string name="poi_name_hint">POI Name</string>
+  <string name="address_hint">City, State, Postal Code.</string>
+  <string name="distance_hint">25km</string>
 </resources>
