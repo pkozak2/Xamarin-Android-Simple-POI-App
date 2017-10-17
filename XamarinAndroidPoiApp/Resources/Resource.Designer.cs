@@ -60,29 +60,35 @@ namespace XamarinAndroidPoiApp
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050006
-			public const int addrTextView = 2131034118;
+			// aapt resource value: 0x7f060008
+			public const int actionNew = 2131099656;
 			
-			// aapt resource value: 0x7f050004
-			public const int linearLayout1 = 2131034116;
+			// aapt resource value: 0x7f060009
+			public const int actionRefresh = 2131099657;
 			
-			// aapt resource value: 0x7f050005
-			public const int nameTextView = 2131034117;
+			// aapt resource value: 0x7f060006
+			public const int addrTextView = 2131099654;
 			
-			// aapt resource value: 0x7f050003
-			public const int poiImageView = 2131034115;
+			// aapt resource value: 0x7f060004
+			public const int linearLayout1 = 2131099652;
 			
-			// aapt resource value: 0x7f050001
-			public const int poiListView = 2131034113;
+			// aapt resource value: 0x7f060005
+			public const int nameTextView = 2131099653;
 			
-			// aapt resource value: 0x7f050002
-			public const int progressBar = 2131034114;
+			// aapt resource value: 0x7f060003
+			public const int poiImageView = 2131099651;
 			
-			// aapt resource value: 0x7f050000
-			public const int relativeLayout1 = 2131034112;
+			// aapt resource value: 0x7f060001
+			public const int poiListView = 2131099649;
 			
-			// aapt resource value: 0x7f050007
-			public const int textView1 = 2131034119;
+			// aapt resource value: 0x7f060002
+			public const int progressBar = 2131099650;
+			
+			// aapt resource value: 0x7f060000
+			public const int relativeLayout1 = 2131099648;
+			
+			// aapt resource value: 0x7f060007
+			public const int textView1 = 2131099655;
 			
 			static Id()
 			{
@@ -109,6 +115,22 @@ namespace XamarinAndroidPoiApp
 			}
 			
 			private Layout()
+			{
+			}
+		}
+		
+		public partial class Menu
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int POIListViewMenu = 2131034112;
+			
+			static Menu()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Menu()
 			{
 			}
 		}
