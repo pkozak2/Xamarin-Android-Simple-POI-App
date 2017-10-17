@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Adapters\POIListViewAdapter.cs" />
     <Compile Include="Models\PointOfInterest.cs" />
+    <Compile Include="POIDetailActivity.cs" />
     <Compile Include="POIListActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +79,9 @@
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\POIListItem.axml" />
     <AndroidResource Include="Resources\layout\POIList.axml" />
+    <AndroidResource Include="Resources\layout\POIDetail.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
@@ -100,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\POIListViewMenu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\POIDetailMenu.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

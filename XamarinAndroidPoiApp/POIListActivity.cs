@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.App;
+using Android.Content;
 using Android.Widget;
 using Android.OS;
 using Android.Views;
+using Newtonsoft.Json;
 using XamarinAndroidPoiApp.Adapters;
 using XamarinAndroidPoiApp.Models;
 using XamarinAndroidPoiApp.Services;
@@ -27,9 +29,15 @@ namespace XamarinAndroidPoiApp
             poiListView = FindViewById<ListView>(Resource.Id.poiListView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
-            DownloadPoisListAsync();
+            //DownloadPoisListAsync();
 
             poiListView.ItemClick += POIClicked;
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            DownloadPoisListAsync();
         }
 
         //public async void DownloadPoisListAsync()
@@ -41,19 +49,19 @@ namespace XamarinAndroidPoiApp
         //    poiListView.Adapter = poiListAdapter;
         //}
 
-        private List<PointOfInterest> GetPoisListTestData()
-        {
-            List<PointOfInterest> listData = new List<PointOfInterest>();
-            for (int i = 0; i < 20; i++)
-            {
-                PointOfInterest poi = new PointOfInterest();
-                poi.Id = i;
-                poi.Name = "Name " + i;
-                poi.Address = "Address " + i;
-                listData.Add(poi);
-            }
-            return listData;
-        }
+        //private List<PointOfInterest> GetPoisListTestData()
+        //{
+        //    List<PointOfInterest> listData = new List<PointOfInterest>();
+        //    for (int i = 0; i < 20; i++)
+        //    {
+        //        PointOfInterest poi = new PointOfInterest();
+        //        poi.Id = i;
+        //        poi.Name = "Name " + i;
+        //        poi.Address = "Address " + i;
+        //        listData.Add(poi);
+        //    }
+        //    return listData;
+        //}
 
         public async void DownloadPoisListAsync()
         {
@@ -85,6 +93,7 @@ namespace XamarinAndroidPoiApp
             switch (item.ItemId)
             {
                 case Resource.Id.actionNew: // place holder for creating new poi 
+                    StartActivity(typeof(POIDetailActivity));
                     return true;
                 case Resource.Id.actionRefresh:
                     DownloadPoisListAsync();
@@ -95,10 +104,11 @@ namespace XamarinAndroidPoiApp
 
         protected void POIClicked(object sender, ListView.ItemClickEventArgs e)
         {
-            // Fetching the object at user clicked position  
-            PointOfInterest poi = poiListData[(int) e.Id];
-            
-            Console.Out.WriteLine("POI Clicked: Name is {0}", poi.Name);
+            PointOfInterest poi = poiListData[(int)e.Id];
+            Intent poiDetailIntent = new Intent(this, typeof(POIDetailActivity));
+            string poiJson = JsonConvert.SerializeObject(poi);
+            poiDetailIntent.PutExtra("poi", poiJson);
+            StartActivity(poiDetailIntent);
         }
     }
 }
