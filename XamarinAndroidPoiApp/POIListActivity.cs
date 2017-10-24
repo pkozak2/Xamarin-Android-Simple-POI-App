@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Widget;
 using Android.OS;
 using Android.Views;
@@ -12,13 +13,16 @@ using XamarinAndroidPoiApp.Services;
 
 namespace XamarinAndroidPoiApp
 {
-    [Activity(Label = "XamarinAndroidPoiApp", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "XamarinAndroidPoiApp", MainLauncher = true, Icon = "@drawable/icon",
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden)]
     public class POIListActivity : Activity
     {
         private ListView poiListView;
         private ProgressBar progressBar;
         private List<PointOfInterest> poiListData;
         private POIListViewAdapter poiListAdapter;
+        int scrollPosition;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -80,6 +84,11 @@ namespace XamarinAndroidPoiApp
                 poiListAdapter = new POIListViewAdapter(this, poiListData);
                 poiListView.Adapter = poiListAdapter;
             }
+
+            poiListView.Post(() =>
+            {
+                poiListView.SetSelection(scrollPosition);
+            });
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -104,11 +113,31 @@ namespace XamarinAndroidPoiApp
 
         protected void POIClicked(object sender, ListView.ItemClickEventArgs e)
         {
-            PointOfInterest poi = poiListData[(int)e.Id];
+            PointOfInterest poi = poiListData[(int) e.Id];
             Intent poiDetailIntent = new Intent(this, typeof(POIDetailActivity));
             string poiJson = JsonConvert.SerializeObject(poi);
             poiDetailIntent.PutExtra("poi", poiJson);
             StartActivity(poiDetailIntent);
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState); // Place your logic to save activity state 
+
+            int currentPosition = poiListView.FirstVisiblePosition;
+            outState.PutInt("scroll_position", currentPosition);
+        }
+
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState); // Place your logic to restore activity state 
+            scrollPosition = savedInstanceState.GetInt("scroll_position");
+
+        }
+
+        public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
+        {
+            base.OnConfigurationChanged(newConfig); //update UI to reflect the orientation change 
         }
     }
 }
