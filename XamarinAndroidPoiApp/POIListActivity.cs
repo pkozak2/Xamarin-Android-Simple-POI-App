@@ -17,12 +17,23 @@ namespace XamarinAndroidPoiApp
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden)]
     public class POIListActivity : Activity
     {
+        public static bool isDualMode = false;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.POIList);
+
+            var detailsLayout = FindViewById(Resource.Id.poiDualDetailLayout);
+            if (detailsLayout != null && detailsLayout.Visibility == ViewStates.Visible)
+            {
+                isDualMode = true;
+            }
+            else
+            {
+                isDualMode = false;
+            }
 
         }
     }

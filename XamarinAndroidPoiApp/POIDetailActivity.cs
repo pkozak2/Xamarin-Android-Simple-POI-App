@@ -35,7 +35,7 @@ namespace XamarinAndroidPoiApp
             }
 
             FragmentTransaction ft = FragmentManager.BeginTransaction();
-            ft.Add(Resource.Id.poiDetailLayout, detailFragment);
+            ft.Add(Resource.Id.poiDetailsLayout, detailFragment);
             ft.Commit();
         }
 
