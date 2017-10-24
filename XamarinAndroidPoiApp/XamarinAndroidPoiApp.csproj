@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\POIListViewAdapter.cs" />
+    <Compile Include="Fragments\POIDetailsFragment.cs" />
+    <Compile Include="Fragments\POIListFragment.cs" />
     <Compile Include="Models\PointOfInterest.cs" />
     <Compile Include="POIDetailActivity.cs" />
     <Compile Include="POIListActivity.cs" />
@@ -78,8 +80,16 @@
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\POIListItem.axml" />
-    <AndroidResource Include="Resources\layout\POIList.axml" />
+    <AndroidResource Include="Resources\layout\POIList.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\POIDetail.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\POIDetailsFragment.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\POIListFragment.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
