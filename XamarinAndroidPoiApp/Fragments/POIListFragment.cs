@@ -17,7 +17,7 @@ using XamarinAndroidPoiApp.Services;
 
 namespace XamarinAndroidPoiApp.Fragments
 {
-    public class POIListFragment : ListFragment
+    public class POIListFragment : Android.Support.V4.App.ListFragment
     {
         private ProgressBar progressBar;
         private List<PointOfInterest> poiListData;
@@ -48,7 +48,7 @@ namespace XamarinAndroidPoiApp.Fragments
 
             progressBar = view.FindViewById<ProgressBar>(Resource.Id.progressBar);
 
-            SetHasOptionsMenu(true);
+            HasOptionsMenu = true;
 
             return view;
         }
@@ -73,7 +73,7 @@ namespace XamarinAndroidPoiApp.Fragments
                     if (POIListActivity.isDualMode)
                     {
                         var detailFragment = new POIDetailsFragment();
-                        FragmentTransaction ft = FragmentManager.BeginTransaction();
+                        Android.Support.V4.App.FragmentTransaction ft = FragmentManager.BeginTransaction();
                         ft.Replace(Resource.Id.poiDualDetailLayout, detailFragment);
                         ft.Commit();
                     }
@@ -98,7 +98,7 @@ namespace XamarinAndroidPoiApp.Fragments
                 var detailFragment = new POIDetailsFragment();
                 detailFragment.Arguments = new Bundle();
                 detailFragment.Arguments.PutString("poi", JsonConvert.SerializeObject(poi));
-                FragmentTransaction ft = FragmentManager.BeginTransaction();
+                Android.Support.V4.App.FragmentTransaction ft = FragmentManager.BeginTransaction();
                 ft.Replace(Resource.Id.poiDualDetailLayout, detailFragment);
                 ft.Commit();
             }

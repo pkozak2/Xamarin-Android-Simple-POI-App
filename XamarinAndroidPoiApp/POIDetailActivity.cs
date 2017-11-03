@@ -17,7 +17,7 @@ using XamarinAndroidPoiApp.Services;
 namespace XamarinAndroidPoiApp
 {
     [Activity(Label = "POIDetailActivity")]
-    public class POIDetailActivity : Activity
+    public class POIDetailActivity : Android.Support.V4.App.FragmentActivity
     {
         PointOfInterest _poi;
 
@@ -34,7 +34,7 @@ namespace XamarinAndroidPoiApp
                 detailFragment.Arguments.PutString("poi", poiJson);
             }
 
-            FragmentTransaction ft = FragmentManager.BeginTransaction();
+            Android.Support.V4.App.FragmentTransaction ft = SupportFragmentManager.BeginTransaction();
             ft.Add(Resource.Id.poiDetailsLayout, detailFragment);
             ft.Commit();
         }

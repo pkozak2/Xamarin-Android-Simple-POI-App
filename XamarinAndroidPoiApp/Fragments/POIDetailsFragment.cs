@@ -16,7 +16,7 @@ using XamarinAndroidPoiApp.Services;
 
 namespace XamarinAndroidPoiApp.Fragments
 {
-    public class POIDetailsFragment : Fragment
+    public class POIDetailsFragment : Android.Support.V4.App.Fragment
     {
         PointOfInterest _poi;
         EditText _nameEditText;
@@ -58,7 +58,7 @@ namespace XamarinAndroidPoiApp.Fragments
             _longEditText = view.FindViewById<EditText>(Resource.Id.longEditText);
             UpdateUI();
 
-            SetHasOptionsMenu(true);
+            HasOptionsMenu = true;
             return view;
         }
 
@@ -171,7 +171,7 @@ namespace XamarinAndroidPoiApp.Fragments
 
         protected void DeletePOI()
         {
-            FragmentTransaction ft = FragmentManager.BeginTransaction();
+            Android.Support.V4.App.FragmentTransaction ft = FragmentManager.BeginTransaction();
             DeleteDialogFragment dialogFragment = new DeleteDialogFragment();
             Bundle bundle = new Bundle();
             bundle.PutString("name", _poi.Name);

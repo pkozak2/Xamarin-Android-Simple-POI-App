@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace XamarinAndroidPoiApp.Fragments
 {
-    public class DeleteDialogFragment : DialogFragment
+    public class DeleteDialogFragment : Android.Support.V4.App.DialogFragment
     {
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
