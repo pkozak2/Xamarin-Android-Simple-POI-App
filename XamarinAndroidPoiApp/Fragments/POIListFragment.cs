@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
 using XamarinAndroidPoiApp.Adapters;
+using XamarinAndroidPoiApp.Managers;
 using XamarinAndroidPoiApp.Models;
 using XamarinAndroidPoiApp.Services;
 
@@ -129,16 +130,24 @@ namespace XamarinAndroidPoiApp.Fragments
                 Toast toast = Toast.MakeText(activity,
                     "Not conntected to internet. Please check your device network settings.", ToastLength.Short);
                 toast.Show();
+                poiListData = DbManager.Instance.GetPOIListFromCache();
             }
             else
             {
                 progressBar.Visibility = ViewStates.Visible;
                 poiListData = await service.GetPOIListAsync();
-                progressBar.Visibility = ViewStates.Gone;
-                poiListAdapter = new POIListViewAdapter(activity, poiListData);
-                this.ListAdapter = poiListAdapter;
-                ListView.Post(() => { ListView.SetSelection(scrollPosition); });
+                //Clear cached data        
+                DbManager.Instance.ClearPOICache();
+                //Save updated POI data
+                DbManager.Instance.InsertAll(poiListData);
             }
+
+            progressBar.Visibility = ViewStates.Gone;
+            poiListAdapter = new POIListViewAdapter(activity, poiListData);
+            this.ListAdapter = poiListAdapter;
+            ListView.Post(() => { ListView.SetSelection(scrollPosition); });
+
         }
+
     }
 }

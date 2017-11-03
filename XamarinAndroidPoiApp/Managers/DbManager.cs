@@ -44,6 +44,12 @@ namespace XamarinAndroidPoiApp.Managers
             return result;
         }
 
+        public int InsertAll(List<PointOfInterest> pois)
+        {
+           int result = dbConn.InsertAll(pois);
+           return result;
+        }
+
         public List<PointOfInterest> GetPOIListFromCache()
         {
             var poiListData = new List<PointOfInterest>();

@@ -11,6 +11,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using XamarinAndroidPoiApp.Managers;
 using XamarinAndroidPoiApp.Models;
 using XamarinAndroidPoiApp.Services;
 
@@ -193,15 +194,11 @@ namespace XamarinAndroidPoiApp.Fragments
             string response = await service.CreateOrUpdatePOIAsync(_poi, activity);
             if (!string.IsNullOrEmpty(response))
             {
-                Toast toast = Toast.MakeText(activity, String.Format("{0} saved.", _poi.Name), ToastLength.Short);
-                toast.Show();
-                activity.Finish();
+                Toast toast = Toast.MakeText(activity, String.Format("{0} saved.", _poi.Name), ToastLength.Short); toast.Show();
+                DbManager.Instance.SavePOI(poi);
+                if (!POIListActivity.isDualMode) activity.Finish();
             }
-            else
-            {
-                Toast toast = Toast.MakeText(activity, "Something went Wrong!", ToastLength.Short);
-                toast.Show();
-            }
+            else { Toast toast = Toast.MakeText(activity, "Something went Wrong!", ToastLength.Short); toast.Show(); }
         }
 
         public async void DeletePOIAsync()
@@ -219,7 +216,8 @@ namespace XamarinAndroidPoiApp.Fragments
             {
                 Toast toast = Toast.MakeText(activity, String.Format("{0} deleted.", _poi.Name), ToastLength.Short);
                 toast.Show();
-                activity.Finish();
+                DbManager.Instance.DeletePOI(_poi.Id);
+                if (!POIListActivity.isDualMode) activity.Finish();
             }
             else
             {

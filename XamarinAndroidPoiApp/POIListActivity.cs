@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Views;
 using Newtonsoft.Json;
 using XamarinAndroidPoiApp.Adapters;
+using XamarinAndroidPoiApp.Managers;
 using XamarinAndroidPoiApp.Models;
 using XamarinAndroidPoiApp.Services;
 
@@ -24,6 +25,8 @@ namespace XamarinAndroidPoiApp
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.POIList);
+
+            DbManager.Instance.CreateTable();
 
             var detailsLayout = FindViewById(Resource.Id.poiDualDetailLayout);
             if (detailsLayout != null && detailsLayout.Visibility == ViewStates.Visible)
