@@ -327,6 +327,9 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a0024
 			public const int descrEditText = 2131361828;
 			
+			// aapt resource value: 0x7f0a0035
+			public const int distanceTextView = 2131361845;
+			
 			// aapt resource value: 0x7f0a001d
 			public const int end_padder = 2131361821;
 			
@@ -425,9 +428,6 @@ namespace XamarinAndroidPoiApp
 			
 			// aapt resource value: 0x7f0a0003
 			public const int text2 = 2131361795;
-			
-			// aapt resource value: 0x7f0a0035
-			public const int textView1 = 2131361845;
 			
 			// aapt resource value: 0x7f0a0021
 			public const int textView10 = 2131361825;

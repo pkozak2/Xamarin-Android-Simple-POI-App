@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -17,6 +18,7 @@ namespace XamarinAndroidPoiApp.Adapters
     {
         private readonly Activity context;
         private List<PointOfInterest> poiListData;
+        public Location CurrentLocation { get; set; }
 
         public POIListViewAdapter(Activity _context, List<PointOfInterest> _poiListData) : base()
         {
@@ -51,6 +53,20 @@ namespace XamarinAndroidPoiApp.Adapters
             if (!String.IsNullOrEmpty(poi.Address))
             {
                 Koush.UrlImageViewHelper.SetUrlDrawable(imageView, poi.Image, Resource.Drawable.icon);
+            }
+
+            var distanceTextView = view.FindViewById<TextView>(Resource.Id.distanceTextView);
+            if ((CurrentLocation != null) && (poi.Latitude.HasValue) && (poi.Longitude.HasValue))
+            {
+                Location poiLocation = new Location("");
+                poiLocation.Latitude = poi.Latitude.Value;
+                poiLocation.Longitude = poi.Longitude.Value;
+                float distance = CurrentLocation.DistanceTo(poiLocation) * 0.000621371F;
+                distanceTextView.Text = String.Format("{0:0,0.00}  miles", distance);
+            }
+            else
+            {
+                distanceTextView.Text = "??";
             }
             return view;
         }

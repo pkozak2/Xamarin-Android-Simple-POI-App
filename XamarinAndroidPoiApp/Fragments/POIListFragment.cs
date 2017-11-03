@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -18,13 +19,14 @@ using XamarinAndroidPoiApp.Services;
 
 namespace XamarinAndroidPoiApp.Fragments
 {
-    public class POIListFragment : Android.Support.V4.App.ListFragment
+    public class POIListFragment : Android.Support.V4.App.ListFragment, ILocationListener
     {
         private ProgressBar progressBar;
         private List<PointOfInterest> poiListData;
         private POIListViewAdapter poiListAdapter;
         private Activity activity;
         private int scrollPosition;
+        LocationManager locMgr;
 
         public override void OnAttach(Activity activity)
         {
@@ -62,6 +64,8 @@ namespace XamarinAndroidPoiApp.Fragments
 
             HasOptionsMenu = true;
 
+            locMgr = (LocationManager)Activity.GetSystemService(Context.LocationService);
+
             return view;
         }
 
@@ -69,6 +73,18 @@ namespace XamarinAndroidPoiApp.Fragments
         {
             DownloadPoisListAsync();
             base.OnResume();
+
+            Criteria criteria = new Criteria();
+            criteria.Accuracy = Accuracy.NoRequirement;
+            criteria.PowerRequirement = Power.NoRequirement;
+            string provider = locMgr.GetBestProvider(criteria, true);
+            locMgr.RequestLocationUpdates(provider, 2000, 100, this);
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            locMgr.RemoveUpdates(this);
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
@@ -149,5 +165,25 @@ namespace XamarinAndroidPoiApp.Fragments
 
         }
 
+        public void OnLocationChanged(Location location)
+        {
+            if (this.ListAdapter != null)
+            {
+                (this.ListAdapter as POIListViewAdapter).CurrentLocation = location;
+                this.ListView.InvalidateViews();
+            }
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+        }
+
+        public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
+        {
+        }
     }
 }

@@ -38,7 +38,7 @@
         p1:text="@string/distance_hint"
         p1:layout_width="wrap_content"
         p1:layout_height="wrap_content"
-        p1:id="@+id/textView1"
+        p1:id="@+id/distanceTextView"
         p1:layout_centerVertical="true"
         p1:layout_alignParentRight="true" />
 </RelativeLayout>
