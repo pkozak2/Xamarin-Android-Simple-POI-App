@@ -23,6 +23,7 @@ namespace XamarinAndroidPoiApp.Fragments
         private List<PointOfInterest> poiListData;
         private POIListViewAdapter poiListAdapter;
         private Activity activity;
+        private int scrollPosition;
 
         public override void OnAttach(Activity activity)
         {
@@ -32,9 +33,19 @@ namespace XamarinAndroidPoiApp.Fragments
 
         public override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
 
-            // Create your fragment here
+            base.OnCreate(savedInstanceState);
+            if (null != savedInstanceState)
+            {
+                scrollPosition = savedInstanceState.GetInt("scroll_position");
+            }
+        }
+
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            int currentPosition = ListView.FirstVisiblePosition;
+            outState.PutInt("scroll_position", currentPosition);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -126,6 +137,7 @@ namespace XamarinAndroidPoiApp.Fragments
                 progressBar.Visibility = ViewStates.Gone;
                 poiListAdapter = new POIListViewAdapter(activity, poiListData);
                 this.ListAdapter = poiListAdapter;
+                ListView.Post(() => { ListView.SetSelection(scrollPosition); });
             }
         }
     }
