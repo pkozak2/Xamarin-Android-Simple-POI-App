@@ -235,6 +235,20 @@ namespace XamarinAndroidPoiApp.Fragments
             }
         }
 
+        protected void UpdateAddressFields(Address addr)
+        {
+            if (String.IsNullOrEmpty(_nameEditText.Text)) _nameEditText.Text = addr.FeatureName;
+
+            if (String.IsNullOrEmpty(_addrEditText.Text))
+            {
+                for (int i = 0; i < addr.MaxAddressLineIndex; i++)
+                {
+                    if (!String.IsNullOrEmpty(_addrEditText.Text)) _addrEditText.Text += System.Environment.NewLine;
+                    _addrEditText.Text += addr.GetAddressLine(i);
+                }
+            }
+        }
+
         protected void GetLocationClicked(object sender, EventArgs e)
         {
             Criteria criteria = new Criteria();
@@ -247,6 +261,12 @@ namespace XamarinAndroidPoiApp.Fragments
         {
             _latEditText.Text = location.Latitude.ToString();
             _longEditText.Text = location.Longitude.ToString();
+            Geocoder geocdr = new Geocoder(activity);
+            IList<Address> addresses = geocdr.GetFromLocation(location.Latitude, location.Longitude, 5);
+            if (addresses.Any())
+            {
+                UpdateAddressFields(addresses.First());
+            }
         }
 
         public void OnProviderDisabled(string provider)
