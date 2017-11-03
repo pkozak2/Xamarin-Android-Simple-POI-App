@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -17,7 +18,7 @@ using XamarinAndroidPoiApp.Services;
 
 namespace XamarinAndroidPoiApp.Fragments
 {
-    public class POIDetailsFragment : Android.Support.V4.App.Fragment
+    public class POIDetailsFragment : Android.Support.V4.App.Fragment, ILocationListener
     {
         PointOfInterest _poi;
         EditText _nameEditText;
@@ -27,6 +28,8 @@ namespace XamarinAndroidPoiApp.Fragments
         EditText _longEditText;
 
         private Activity activity;
+        private LocationManager locMgr;
+        private ImageButton _locationImageButton;
 
         public override void OnAttach(Activity activity)
         {
@@ -46,6 +49,8 @@ namespace XamarinAndroidPoiApp.Fragments
             {
                 _poi = new PointOfInterest();
             }
+
+            locMgr = (LocationManager)Activity.GetSystemService(Context.LocationService);
         }
 
 
@@ -57,6 +62,10 @@ namespace XamarinAndroidPoiApp.Fragments
             _addrEditText = view.FindViewById<EditText>(Resource.Id.addrEditText);
             _latEditText = view.FindViewById<EditText>(Resource.Id.latEditText);
             _longEditText = view.FindViewById<EditText>(Resource.Id.longEditText);
+
+            _locationImageButton = view.FindViewById<ImageButton>(Resource.Id.locationImageButton);
+            _locationImageButton.Click += GetLocationClicked;
+
             UpdateUI();
 
             HasOptionsMenu = true;
@@ -226,5 +235,30 @@ namespace XamarinAndroidPoiApp.Fragments
             }
         }
 
+        protected void GetLocationClicked(object sender, EventArgs e)
+        {
+            Criteria criteria = new Criteria();
+            criteria.Accuracy = Accuracy.NoRequirement;
+            criteria.PowerRequirement = Power.NoRequirement;
+            locMgr.RequestSingleUpdate(criteria, this, null);
+        }
+
+        public void OnLocationChanged(Location location)
+        {
+            _latEditText.Text = location.Latitude.ToString();
+            _longEditText.Text = location.Longitude.ToString();
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+        }
+
+        public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
+        {
+        }
     }
 }

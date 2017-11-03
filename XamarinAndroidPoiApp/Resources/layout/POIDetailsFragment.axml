@@ -73,5 +73,25 @@
                     p1:id="@+id/longEditText" />
             </TableRow>
         </TableLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            p1:layout_gravity="center_horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_marginTop="10dp"
+            p1:layout_marginBottom="10dp">
+            <ImageButton
+                p1:src="@android:drawable/ic_menu_mylocation"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
+                p1:id="@+id/locationImageButton" />
+            <ImageButton
+                p1:src="@android:drawable/ic_dialog_map"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
+                p1:id="@+id/mapImageButton" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

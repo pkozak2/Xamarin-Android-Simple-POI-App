@@ -279,17 +279,17 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a000d
 			public const int action0 = 2131361805;
 			
-			// aapt resource value: 0x7f0a0037
-			public const int actionDelete = 2131361847;
+			// aapt resource value: 0x7f0a0039
+			public const int actionDelete = 2131361849;
+			
+			// aapt resource value: 0x7f0a003a
+			public const int actionNew = 2131361850;
+			
+			// aapt resource value: 0x7f0a003b
+			public const int actionRefresh = 2131361851;
 			
 			// aapt resource value: 0x7f0a0038
-			public const int actionNew = 2131361848;
-			
-			// aapt resource value: 0x7f0a0039
-			public const int actionRefresh = 2131361849;
-			
-			// aapt resource value: 0x7f0a0036
-			public const int actionSave = 2131361846;
+			public const int actionSave = 2131361848;
 			
 			// aapt resource value: 0x7f0a000a
 			public const int action_container = 2131361802;
@@ -309,8 +309,8 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a0026
 			public const int addrEditText = 2131361830;
 			
-			// aapt resource value: 0x7f0a0034
-			public const int addrTextView = 2131361844;
+			// aapt resource value: 0x7f0a0036
+			public const int addrTextView = 2131361846;
 			
 			// aapt resource value: 0x7f0a0005
 			public const int async = 2131361797;
@@ -327,8 +327,8 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a0024
 			public const int descrEditText = 2131361828;
 			
-			// aapt resource value: 0x7f0a0035
-			public const int distanceTextView = 2131361845;
+			// aapt resource value: 0x7f0a0037
+			public const int distanceTextView = 2131361847;
 			
 			// aapt resource value: 0x7f0a001d
 			public const int end_padder = 2131361821;
@@ -360,11 +360,17 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a0020
 			public const int linearLayout1 = 2131361824;
 			
+			// aapt resource value: 0x7f0a0030
+			public const int listFragment = 2131361840;
+			
 			// aapt resource value: 0x7f0a002e
-			public const int listFragment = 2131361838;
+			public const int locationImageButton = 2131361838;
 			
 			// aapt resource value: 0x7f0a002d
 			public const int longEditText = 2131361837;
+			
+			// aapt resource value: 0x7f0a002f
+			public const int mapImageButton = 2131361839;
 			
 			// aapt resource value: 0x7f0a0010
 			public const int media_actions = 2131361808;
@@ -372,8 +378,8 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a0022
 			public const int nameEditText = 2131361826;
 			
-			// aapt resource value: 0x7f0a0033
-			public const int nameTextView = 2131361843;
+			// aapt resource value: 0x7f0a0035
+			public const int nameTextView = 2131361845;
 			
 			// aapt resource value: 0x7f0a0009
 			public const int normal = 2131361801;
@@ -390,17 +396,17 @@ namespace XamarinAndroidPoiApp
 			// aapt resource value: 0x7f0a001e
 			public const int poiDetailsLayout = 2131361822;
 			
-			// aapt resource value: 0x7f0a002f
-			public const int poiDualDetailLayout = 2131361839;
+			// aapt resource value: 0x7f0a0031
+			public const int poiDualDetailLayout = 2131361841;
+			
+			// aapt resource value: 0x7f0a0034
+			public const int poiImageView = 2131361844;
 			
 			// aapt resource value: 0x7f0a0032
-			public const int poiImageView = 2131361842;
+			public const int progressBar = 2131361842;
 			
-			// aapt resource value: 0x7f0a0030
-			public const int progressBar = 2131361840;
-			
-			// aapt resource value: 0x7f0a0031
-			public const int relativeLayout1 = 2131361841;
+			// aapt resource value: 0x7f0a0033
+			public const int relativeLayout1 = 2131361843;
 			
 			// aapt resource value: 0x7f0a0019
 			public const int right_icon = 2131361817;
