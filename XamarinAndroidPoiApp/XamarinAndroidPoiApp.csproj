@@ -111,6 +111,7 @@
     <Compile Include="Fragments\DeleteDialogFragment.cs" />
     <Compile Include="Fragments\POIDetailsFragment.cs" />
     <Compile Include="Fragments\POIListFragment.cs" />
+    <Compile Include="Fragments\ProgressDialogFragment.cs" />
     <Compile Include="Managers\DbManager.cs" />
     <Compile Include="Models\PointOfInterest.cs" />
     <Compile Include="POIDetailActivity.cs" />

@@ -251,6 +251,10 @@ namespace XamarinAndroidPoiApp.Fragments
 
         protected void GetLocationClicked(object sender, EventArgs e)
         {
+            Android.Support.V4.App.FragmentTransaction ft = FragmentManager.BeginTransaction();
+            var dialogFragment = new ProgressDialogFragment();
+            dialogFragment.Show(ft, "progress_dialog");
+
             Criteria criteria = new Criteria();
             criteria.Accuracy = Accuracy.NoRequirement;
             criteria.PowerRequirement = Power.NoRequirement;
@@ -266,6 +270,14 @@ namespace XamarinAndroidPoiApp.Fragments
             if (addresses.Any())
             {
                 UpdateAddressFields(addresses.First());
+            }
+
+            Android.Support.V4.App.FragmentTransaction ft = FragmentManager.BeginTransaction();
+            ProgressDialogFragment dialogFragment =
+                (ProgressDialogFragment) FragmentManager.FindFragmentByTag("progress_dialog");
+            if (dialogFragment != null)
+            {
+                ft.Remove(dialogFragment).Commit();
             }
         }
 
