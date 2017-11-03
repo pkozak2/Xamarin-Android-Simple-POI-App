@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Locations;
 using Android.OS;
 using Android.Runtime;
@@ -30,6 +31,7 @@ namespace XamarinAndroidPoiApp.Fragments
         private Activity activity;
         private LocationManager locMgr;
         private ImageButton _locationImageButton;
+        private ImageButton _mapImageButton;
 
         public override void OnAttach(Activity activity)
         {
@@ -65,6 +67,9 @@ namespace XamarinAndroidPoiApp.Fragments
 
             _locationImageButton = view.FindViewById<ImageButton>(Resource.Id.locationImageButton);
             _locationImageButton.Click += GetLocationClicked;
+
+            _mapImageButton = view.FindViewById<ImageButton>(Resource.Id.mapImageButton);
+            _mapImageButton.Click += MapClicked;
 
             UpdateUI();
 
@@ -259,6 +264,30 @@ namespace XamarinAndroidPoiApp.Fragments
             criteria.Accuracy = Accuracy.NoRequirement;
             criteria.PowerRequirement = Power.NoRequirement;
             locMgr.RequestSingleUpdate(criteria, this, null);
+        }
+
+        protected void MapClicked(object sender, EventArgs e)
+        {
+            Android.Net.Uri geoUri;
+            if (String.IsNullOrEmpty(_addrEditText.Text))
+            {
+                geoUri = Android.Net.Uri.Parse(String.Format("geo:{0},{1}", _poi.Latitude.ToString().Replace(",", "."), _poi.Longitude.ToString().Replace(",", ".")));
+            }
+            else
+            {
+                geoUri = Android.Net.Uri.Parse(String.Format("geo:0,0?q={0}", _addrEditText.Text));
+            }
+            Intent mapIntent = new Intent(Intent.ActionView, geoUri);
+            PackageManager packageManager = Activity.PackageManager;
+            IList<ResolveInfo> activities = packageManager.QueryIntentActivities(mapIntent, 0);
+            if (activities.Count == 0)
+            {
+                Toast.MakeText(activity, "No map app available.", ToastLength.Short).Show();
+            }
+            else
+            {
+                StartActivity(mapIntent);
+            }
         }
 
         public void OnLocationChanged(Location location)
