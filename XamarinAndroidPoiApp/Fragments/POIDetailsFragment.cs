@@ -171,13 +171,13 @@ namespace XamarinAndroidPoiApp.Fragments
 
         protected void DeletePOI()
         {
-            AlertDialog.Builder alertConfirm = new AlertDialog.Builder(activity);
-            alertConfirm.SetTitle("Confirm delete");
-            alertConfirm.SetCancelable(false);
-            alertConfirm.SetPositiveButton("OK", ConfirmDelete);
-            alertConfirm.SetNegativeButton("Cancel", delegate { });
-            alertConfirm.SetMessage(String.Format("Are you sure you want to delete {0}?", _poi.Name));
-            alertConfirm.Show();
+            FragmentTransaction ft = FragmentManager.BeginTransaction();
+            DeleteDialogFragment dialogFragment = new DeleteDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.PutString("name", _poi.Name);
+            dialogFragment.Arguments = bundle;
+            dialogFragment.SetTargetFragment(this, 0);
+            dialogFragment.Show(ft, "dialog");
         }
 
         private async void CreateOrUpdatePOIAsync(PointOfInterest poi)

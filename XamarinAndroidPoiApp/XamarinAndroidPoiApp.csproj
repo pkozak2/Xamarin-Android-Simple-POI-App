@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\POIListViewAdapter.cs" />
+    <Compile Include="Fragments\DeleteDialogFragment.cs" />
     <Compile Include="Fragments\POIDetailsFragment.cs" />
     <Compile Include="Fragments\POIListFragment.cs" />
     <Compile Include="Models\PointOfInterest.cs" />
