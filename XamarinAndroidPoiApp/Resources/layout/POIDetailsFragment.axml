@@ -13,6 +13,14 @@
         p1:layout_height="fill_parent"
         p1:id="@+id/linearLayout1"
         p1:padding="5dp">
+        <ImageView
+            p1:src="@android:drawable/ic_menu_gallery"
+            p1:layout_width="wrap_content"
+            p1:layout_height="200dp"
+            p1:id="@+id/poiImageView"
+            p1:layout_gravity="center_horizontal"
+            p1:scaleType="centerCrop"
+            p1:layout_marginBottom="10dp" />
         <TextView
             p1:text="Name"
             p1:layout_width="fill_parent"
@@ -92,6 +100,11 @@
                 p1:layout_width="wrap_content"
                 p1:layout_height="wrap_content"
                 p1:id="@+id/mapImageButton" />
+            <ImageButton
+                p1:src="@android:drawable/ic_menu_add"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
+                p1:id="@+id/photoImageButton" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

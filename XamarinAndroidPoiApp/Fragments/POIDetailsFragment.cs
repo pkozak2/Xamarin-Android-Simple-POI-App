@@ -6,8 +6,10 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.Locations;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -16,10 +18,11 @@ using Newtonsoft.Json;
 using XamarinAndroidPoiApp.Managers;
 using XamarinAndroidPoiApp.Models;
 using XamarinAndroidPoiApp.Services;
+using Fragment = Android.Support.V4.App.Fragment;
 
 namespace XamarinAndroidPoiApp.Fragments
 {
-    public class POIDetailsFragment : Android.Support.V4.App.Fragment, ILocationListener
+    public class POIDetailsFragment : Fragment, ILocationListener
     {
         PointOfInterest _poi;
         EditText _nameEditText;
@@ -32,6 +35,8 @@ namespace XamarinAndroidPoiApp.Fragments
         private LocationManager locMgr;
         private ImageButton _locationImageButton;
         private ImageButton _mapImageButton;
+        ImageView _poiImageView;
+        ImageButton _photoImageButton;
 
         public override void OnAttach(Activity activity)
         {
@@ -70,6 +75,12 @@ namespace XamarinAndroidPoiApp.Fragments
 
             _mapImageButton = view.FindViewById<ImageButton>(Resource.Id.mapImageButton);
             _mapImageButton.Click += MapClicked;
+
+            _poiImageView = view.FindViewById<ImageView>(Resource.Id.poiImageView);
+            
+
+            _photoImageButton = view.FindViewById<ImageButton>(Resource.Id.photoImageButton);
+            _photoImageButton.Click += NewPhotoClicked;
 
             UpdateUI();
 
@@ -170,12 +181,13 @@ namespace XamarinAndroidPoiApp.Fragments
                 return;
             }
 
-
             _poi.Name = _nameEditText.Text;
             _poi.Description = _descrEditText.Text;
             _poi.Address = _addrEditText.Text;
             _poi.Latitude = tempLatitude;
             _poi.Longitude = tempLongitude;
+
+
             CreateOrUpdatePOIAsync(_poi);
         }
 
@@ -205,14 +217,34 @@ namespace XamarinAndroidPoiApp.Fragments
                 toast.Show();
                 return;
             }
-            string response = await service.CreateOrUpdatePOIAsync(_poi, activity);
+
+            Bitmap bitmap = null;
+            if (_poi.Id > 0)
+            {
+                bitmap = POIService.GetImage(_poi.Id);
+            }
+            string response;
+            if (bitmap != null)
+            {
+                response = await service.CreateOrUpdatePOIAsync(_poi, bitmap);
+            }
+            else
+            {
+                response = await service.CreateOrUpdatePOIAsync(_poi, activity);
+            }
+
             if (!string.IsNullOrEmpty(response))
             {
-                Toast toast = Toast.MakeText(activity, String.Format("{0} saved.", _poi.Name), ToastLength.Short); toast.Show();
+                Toast toast = Toast.MakeText(activity, String.Format("{0} saved.", _poi.Name), ToastLength.Short);
+                toast.Show();
                 DbManager.Instance.SavePOI(poi);
                 if (!POIListActivity.isDualMode) activity.Finish();
             }
-            else { Toast toast = Toast.MakeText(activity, "Something went Wrong!", ToastLength.Short); toast.Show(); }
+            else
+            {
+                Toast toast = Toast.MakeText(activity, "Something went Wrong!", ToastLength.Short);
+                toast.Show();
+            }
         }
 
         public async void DeletePOIAsync()
@@ -233,6 +265,7 @@ namespace XamarinAndroidPoiApp.Fragments
                 DbManager.Instance.DeletePOI(_poi.Id);
                 if (!POIListActivity.isDualMode) activity.Finish();
             }
+
             else
             {
                 Toast toast = Toast.MakeText(activity, "Something went Wrong!", ToastLength.Short);
@@ -290,6 +323,35 @@ namespace XamarinAndroidPoiApp.Fragments
             }
         }
 
+        int CAPTURE_PHOTO = 100;
+
+        void NewPhotoClicked(object sender, EventArgs e)
+        {
+            if (_poi.Id <= 0)
+            {
+                Toast.MakeText(activity, "You must save the POI before    attaching a photo.",
+                    ToastLength.Short).Show();
+                return;
+            }
+            Intent cameraIntent = new Intent(MediaStore.ActionImageCapture);
+            PackageManager packageManager = Activity.PackageManager;
+            IList<ResolveInfo> activities = packageManager.QueryIntentActivities(cameraIntent, 0);
+            if (activities.Count == 0)
+            {
+                Toast.MakeText(activity, "No camera app available.", ToastLength.Short).Show();
+            }
+            else
+            {
+                string path = POIService.GetFileName(_poi.Id);
+                Java.IO.File imageFile = new Java.IO.File(path);
+                Android.Net.Uri imageUri = Android.Net.Uri.FromFile(imageFile);
+                cameraIntent.PutExtra(MediaStore.ExtraOutput, imageUri);
+                cameraIntent.PutExtra(MediaStore.ExtraSizeLimit, 1 * 1024 * 1024);
+                StartActivityForResult(cameraIntent, CAPTURE_PHOTO);
+            }
+        }
+
+
         public void OnLocationChanged(Location location)
         {
             _latEditText.Text = location.Latitude.ToString();
@@ -320,6 +382,31 @@ namespace XamarinAndroidPoiApp.Fragments
 
         public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
         {
+        }
+
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            if (requestCode == CAPTURE_PHOTO)
+            {
+                if (resultCode == (int)Result.Ok)
+                {
+                    Bitmap bitmap = POIService.GetImage(_poi.Id);
+                    _poiImageView.SetImageBitmap(bitmap);
+                    if (bitmap != null)
+                    {
+                        bitmap.Dispose();
+                        bitmap = null;
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(Activity, "No picture captured.", ToastLength.Short).Show();
+                }
+            }
+            else
+            {
+                base.OnActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 }

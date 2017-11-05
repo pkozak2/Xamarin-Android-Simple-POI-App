@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
@@ -24,6 +26,7 @@ namespace XamarinAndroidPoiApp.Services
         private const string GET_POIS = "http://private-e451d-poilist.apiary-mock.com/com.packt.poiapp/api/poi/pois";
         private const string CREATE_POI = "http://private-e451d-poilist.apiary-mock.com/com.packt.poiapp/api/poi/create";
         private const string DELETE_POI = "http://private-e451d-poilist.apiary-mock.com/com.packt.poiapp/api/poi/delete/{0}";
+        private const string UPLOAD_POI = "http://private-e451d-poilist.apiary-mock.com/com.packt.poiapp/api/poi/upload";
         private List<PointOfInterest> poiListData = null;
 
         public async Task<List<PointOfInterest>> GetPOIListAsync()
@@ -73,6 +76,37 @@ namespace XamarinAndroidPoiApp.Services
             return null;
         }
 
+        public async Task<String> CreateOrUpdatePOIAsync(PointOfInterest poi, Bitmap bitmap)
+        {
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new POIContractResolver();
+            var poiJson = JsonConvert.SerializeObject(poi, Formatting.None, settings);
+            var stringContent = new StringContent(poiJson);
+            byte[] bitmapData;
+            var stream = new MemoryStream();
+            bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
+            bitmapData = stream.ToArray();
+            var fileContent = new ByteArrayContent(bitmapData);
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "file",
+                FileName = "poiimage" + poi.Id.ToString() + ".jpg"
+            };
+            string boundary = "---8d0f01e6b3b5daf";
+            MultipartFormDataContent multipartContent = new MultipartFormDataContent(boundary);
+            multipartContent.Add(fileContent);
+            multipartContent.Add(stringContent, "poi");
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = await httpClient.PostAsync(UPLOAD_POI, multipartContent);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                return content;
+            }
+            return null;
+        }
+
         public async Task<String> DeletePOIAsync(int poiId)
         {
             HttpClient httpClient = new HttpClient();
@@ -80,6 +114,7 @@ namespace XamarinAndroidPoiApp.Services
             HttpResponseMessage response = await httpClient.DeleteAsync(url);
             if (response != null || response.IsSuccessStatusCode)
             {
+                DeleteImage(poiId);
                 string content = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("One record deleted.");
                 return content;
@@ -92,6 +127,33 @@ namespace XamarinAndroidPoiApp.Services
             var connectivityManager = (ConnectivityManager) activity.GetSystemService(Context.ConnectivityService);
             var activeConnection = connectivityManager.ActiveNetworkInfo;
             return (null != activeConnection && activeConnection.IsConnected);
+        }
+
+        public static string GetFileName(int poiId)
+        {
+            String storagePath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, "POIApp");
+            String path = System.IO.Path.Combine(storagePath, "poiimage" + poiId + ".jpg");
+            return path;
+        }
+
+        public static Bitmap GetImage(int poiId)
+        {
+            string filename = GetFileName(poiId);
+            if (File.Exists(filename))
+            {
+                Java.IO.File imageFile = new Java.IO.File(filename);
+                return BitmapFactory.DecodeFile(imageFile.Path);
+            }
+            return null;
+        }
+
+        public void DeleteImage(int poiId)
+        {
+            String filePath = GetFileName(poiId);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
 
         public class POIContractResolver : DefaultContractResolver

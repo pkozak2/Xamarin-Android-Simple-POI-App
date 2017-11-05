@@ -50,7 +50,7 @@ namespace XamarinAndroidPoiApp.Adapters
                 view.FindViewById<TextView>(Resource.Id.addrTextView).Text = poi.Address;
             }
             var imageView = view.FindViewById<ImageView>(Resource.Id.poiImageView);
-            if (!String.IsNullOrEmpty(poi.Address))
+            if (!String.IsNullOrEmpty(poi.Image))
             {
                 Koush.UrlImageViewHelper.SetUrlDrawable(imageView, poi.Image, Resource.Drawable.icon);
             }
